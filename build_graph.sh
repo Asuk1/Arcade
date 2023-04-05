@@ -1,0 +1,1 @@
+g++ -shared -o lib/arcade_sfml.so  GraphicExemple/sfml/sources/sfml.cpp  -W -Wall -Wextra -fPIC  -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -g3

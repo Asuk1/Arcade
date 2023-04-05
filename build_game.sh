@@ -1,0 +1,1 @@
+g++ -shared -o lib/$1.so  GameExemples/$1.cpp  -W -Wall -Wextra -fPIC -g3
