@@ -20,7 +20,7 @@
     #include "DynamicLoader.hpp"
     #include <filesystem>
 
-//Dynamic loader -> open .so récupérer les infos(getinfo(std::string info)) et close 
+//Dynamic loader -> open .so récupérer les infos(getinfo(std::string info)) et close
 
 
 namespace code {
@@ -36,12 +36,12 @@ namespace code {
                 // Load all libraries from the given path
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
                     if (entry.path().extension() == ".so") {
-
+                        std::string lib_path = entry.path().filename(); // entry.path() returns a filesystem::path object which represents the path of the file or directory. In this case, entry is an object representing an entry in the directory pointed to by path
+                        std::string lib_name = entry.path().stem().string(); // entry.path() returns a filesystem::path object which represents the path of the file or directory. In this case, entry is an object representing an entry in the directory pointed to by path
                         try {
-
-                            std::cout << "Library " << lib_name << " successfully loaded." << std::endl;
+                            std::cout << "Library " << lib_name <<" successfully loaded." << std::endl;
                         } catch (const std::exception& ex) {
-                            std::cerr << "Error: cannot load library " << lib_name << " (" << ex.what() << ")" << std::endl;
+                            std::cerr << "Error: cannot load library " << lib_name <<" (" << ex.what() << ")" << std::endl;
                         }
                     }
                 }
@@ -70,15 +70,25 @@ namespace code {
 
             int loop_for_game()
             {
+                while (_is_menu_still_running) {
+                    // Load the menu module
+                    load_actual_menu(_menus[_actual_menu]);
 
+                    // Load the first game as the default one
+                    load_actual_game(_games[_actual_game]);
+
+                    // Start the loop for the game
+                    loop_for_game();
+                }
+                return return_value;
             }
-
 
             void load_actual_lib(const std::string& lib_path)
             {
                 try {
                     _libLoader->loadLibrary(lib_path);
-                    _libLoader->loadSymbol<arcade::interface::IDisplayModule *()>("createDisplayModule"); //recupérer le loadsymbol dans un pointer sur fonction qui revoit un display module
+                    auto tmp = _libLoader->loadSymbol<arcade::interface::IDisplayModule *(*)()>("createModule");
+                    arcade::interface::IDisplayModule *_lib = tmp();
 
                 } catch (const std::exception& ex) {
                     throw std::runtime_error("Error: cannot load library from path: " + lib_path + " (" + ex.what() + ")");
