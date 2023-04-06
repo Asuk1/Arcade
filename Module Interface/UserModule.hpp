@@ -14,11 +14,20 @@ namespace arcade
     class User_data
     {
         public:
+            /**
+             * @brief Construct a new User_data object
+             * 
+             */
             User_data()
             {
                 this->_name = "Guest";
                 this->_score = 0;
             }
+
+            /**
+             * @brief Destroy the User_data object
+             * 
+             */
             ~User_data() = default;
 
             /**
@@ -36,7 +45,7 @@ namespace arcade
              * 
              * @return const std::string& is the name
              */
-            const std::string &getName() const
+            std::string getName() const
             {
                 return this->_name;
             }

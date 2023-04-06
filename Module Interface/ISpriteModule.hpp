@@ -10,9 +10,11 @@
     #include <string>
     #include "Color.hpp"
 
-namespace arcade {
-    namespace interface {
-    class ISpriteModule {
+namespace arcade
+{
+    namespace interface
+    {
+        class ISpriteModule {
             public:
                 /**
                  * @brief Destroy the ISpriteModule object
@@ -26,9 +28,9 @@ namespace arcade {
                  * USED ONLY IN WRAPPER
                  * MUST : return the object sprite or texture to draw
                  * 
-                 * @return void *is the sprite
+                 * @return void * is the sprite
                  */
-                virtual void *getSprite() const = 0;
+                virtual void *getSprite() = 0;
 
 
                 /**
@@ -39,7 +41,7 @@ namespace arcade {
                  * ex SFML: assetPath = ./Assets/Pacman/enemy/goblin/enemy
                  * assetPath = ./Assets/Pacman/enemy/goblin/enemy
                  * real path (inside sfml implementation) =./Assets/Pacman/enmey/goblin/enemy.png  or .jpeg
-
+                 * @attention the path must be without the extension
                  * @param filePath is the path to the sprite
                  */
                 virtual void setSprite(const std::string &filePath) = 0;
@@ -83,11 +85,16 @@ namespace arcade {
                 /**
                  * @brief Set the Color object
                  * 
-                 * @param r red
-                 * @param g green
-                 * @param b blue
+                 * @param color is the color to set
                  */
                 virtual void setColor(arcade::Color color) = 0;
+
+                /**
+                * @brief Get the Color object
+                * 
+                * @return arcade::Color is the color of the sprite
+                */
+                virtual arcade::Color getColor() const = 0;
     };
     }
 }

@@ -19,6 +19,11 @@ namespace arcade
             int g;
             int b;
             int a;
+
+            bool operator==(const Color &other) const
+            {
+                return (r == other.r && g == other.g && b == other.b && a == other.a);
+            }
     };
 
     const Color RED = Color(255, 0, 0, 255);
@@ -27,13 +32,8 @@ namespace arcade
     const Color WHITE = Color(255, 255, 255, 255);
     const Color BLACK = Color(0, 0, 0, 255);
     const Color YELLOW = Color(255, 255, 0, 255);
-    const Color PURPLE = Color(255, 0, 255, 255);
+    const Color MAGENTA = Color(255, 0, 255, 255);
     const Color CYAN = Color(0, 255, 255, 255);
-    const Color ORANGE = Color(255, 165, 0, 255);
-    const Color PINK = Color(255, 192, 203, 255);
-    const Color BROWN = Color(165, 42, 42, 255);
-    const Color GRAY = Color(128, 128, 128, 255);
-    const Color TRANSPARENT = Color(0, 0, 0, 0);
 }
 
 #endif /* !COLOR_HPP_ */

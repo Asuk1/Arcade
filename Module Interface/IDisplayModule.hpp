@@ -17,7 +17,6 @@ namespace arcade
 {
     namespace interface
     {
-
         /**
          * @brief The Enum KeyCode is used to represent the key pressed
          * 
@@ -39,42 +38,42 @@ namespace arcade
             M,              //     The M key.
             N,              //     The N key.
             O,              //     The O key.
-            P,              //   The P key.
-            Q,              //   The Q key.
-            R,              //   The R key.
-            S,              //   The S key.
-            T,              //   The T key.
-            U,              //   The U key.
-            V,              //   The V key.
-            W,              //   The W key.
-            X,              //   The X key.
-            Y,              //   The Y key.
+            P,              //     The P key.
+            Q,              //     The Q key.
+            R,              //     The R key.
+            S,              //     The S key.
+            T,              //     The T key.
+            U,              //     The U key.
+            V,              //     The V key.
+            W,              //     The W key.
+            X,              //     The X key.
+            Y,              //     The Y key.
             Z,              //     The Z key.
-            Num0,           //    The 0 key.
-            Num1,           //    The 1 key.
-            Num2,           //    The 2 key.
-            Num3,           //    The 3 key.
-            Num4,           //    The 4 key.
-            Num5,           //    The 5 key.
-            Num6,           //    The 6 key.
-            Num7,           //    The 7 key.
-            Num8,           //    The 8 key.
-            Num9,           //    The 9 key.
-            Escape,         //      The Escape key.
-            LControl,       //    The left Control key.
-            LShift,         //      The left Shift key.
-            LAlt,           //    The left Alt key.
-            LSystem,        //   The left OS specific key: window (Windows and Linux), apple (MacOS X), ...
-            RControl,       //    The right Control key.
-            RShift,         //      The right Shift key.
-            RAlt,           //    The right Alt key.
-            RSystem,        //   The right OS specific key: window (Windows and Linux), apple (MacOS X), ...
-            Menu,           //    The Menu key.
-            LBracket,       //    The [ key.
-            RBracket,       //    The ] key.
+            Num0,           //     The 0 key.
+            Num1,           //     The 1 key.
+            Num2,           //     The 2 key.
+            Num3,           //     The 3 key.
+            Num4,           //     The 4 key.
+            Num5,           //     The 5 key.
+            Num6,           //     The 6 key.
+            Num7,           //     The 7 key.
+            Num8,           //     The 8 key.
+            Num9,           //     The 9 key.
+            Escape,         //     The Escape key.
+            LControl,       //     The left Control key.
+            LShift,         //     The left Shift key.
+            LAlt,           //     The left Alt key.
+            LSystem,        //     The left OS specific key: window (Windows and Linux), apple (MacOS X), ...
+            RControl,       //     The right Control key.
+            RShift,         //     The right Shift key.
+            RAlt,           //     The right Alt key.
+            RSystem,        //     The right OS specific key: window (Windows and Linux), apple (MacOS X), ...
+            Menu,           //     The Menu key.
+            LBracket,       //     The [ key.
+            RBracket,       //     The ] key.
             Semicolon,      //     The ; key.
             Comma,          //     The , key.
-            Period,         //  The . key.
+            Period,         //     The . key.
             Quote,          //     The ' key.
             Slash,          //     The / key.
             Backslash,      //     The \ key.
@@ -131,7 +130,6 @@ namespace arcade
             MouseButton3,   //    MiddleClick
 
         };
-
         class IDisplayModule {
             public:
                 /**
@@ -185,14 +183,14 @@ namespace arcade
                  * 
                  * @return unsigned int the width of the window
                  */
-                virtual unsigned int getWindowWidth() = 0;
+                virtual unsigned int getWindowWidth() const = 0;
 
                 /**
                  * @brief Get the Window Height object
                  * 
                  * @return unsigned int the height of the window
                  */
-                virtual unsigned int getWindowHeight() = 0;
+                virtual unsigned int getWindowHeight() const = 0;
 
                 /**
                  * @brief Set the Fps object
@@ -206,7 +204,7 @@ namespace arcade
                  * 
                  * @param title the title to set to the window
                  */
-                virtual void setWindowTitle(std::string title) = 0;
+                virtual void setWindowTitle(const std::string &title) = 0;
 
                 /**
                  * @brief Set the Full Screen object
@@ -221,7 +219,7 @@ namespace arcade
                  * @return true if the window is still running
                  * @return false if the window is not running
                  */
-                virtual bool isOpen() = 0;
+                virtual bool isOpen() const = 0;
 
                 /**
                  * @brief tell if the display is text mode or not
@@ -229,7 +227,7 @@ namespace arcade
                  * @return true if the display is text mode
                  * @return false if the display is not text mode
                  */
-                virtual bool isTextMode() = 0;
+                virtual bool isTextMode()const = 0;
 
                 /**
                  * @brief clear the window
