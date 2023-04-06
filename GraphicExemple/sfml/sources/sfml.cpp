@@ -5,10 +5,10 @@
 ** SfmlSymbols
 */
 
-#include "../include/SfmlDisplay.hpp"
-#include "../include/SfmlSprite.hpp"
-#include "../include/SfmlText.hpp"
-#include "../include/SfmlAudio.hpp"
+#include "SfmlDisplay.hpp"
+#include "SfmlSprite.hpp"
+#include "SfmlText.hpp"
+#include "SfmlAudio.hpp"
 #include <memory>
 #include <string>
 

@@ -1,5 +1,5 @@
 ##
-## EPITECH PROJECT, 2022
+## EPITECH PROJECT, 2023
 ## sfml
 ## File description:
 ## Makefile
@@ -13,7 +13,7 @@ OBJ         =	$(SRC:.cpp=.o)
 
 CC          =	g++
 
-CPPFLAGS	=	-Iinclude/
+CPPFLAGS	=	-Iinclude/ -I../../../includes/Module\ Interface/
 
 CXXFLAGS      =   -W -Wall -Wextra -fPIC
 
