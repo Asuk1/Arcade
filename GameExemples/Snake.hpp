@@ -131,5 +131,7 @@ class Snake : public arcade::interface::IGameModule
             char direction;
             bool gameOver;
             int score;
+
+        //sauvegarde de la position lorsque on change de jeu
 };
 
