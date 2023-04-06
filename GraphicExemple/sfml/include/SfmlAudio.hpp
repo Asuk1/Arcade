@@ -20,10 +20,7 @@ namespace arcade
              * @brief Construct a new Sfml Audio object 
              * 
              */
-            SfmlAudio()
-            {
-                sound = std::make_shared<sf::Music>();
-            }
+            SfmlAudio();
 
             /**
              * @brief Destroy the Sfml Audio object
@@ -36,47 +33,32 @@ namespace arcade
              * 
              * @param source_path is the path to the music 
              */
-            void setSource(const std::string &source_path)
-            {
-                this->sound->openFromFile(source_path);
-            }
+            void setSource(const std::string &source_path);
             
             /**
              * @brief Play the music
              * 
              */
-            void play()
-            {
-                sound->play();
-            }
+            void play();
 
             /**
              * @brief Pause the music
              * 
              */
-            void pause()
-            {
-                sound->pause();
-            }
+            void pause();
 
             /**
              * @brief Stop the music
              * 
              */
-            void stop()
-            {
-                sound->stop();
-            }
+            void stop();
 
             /**
              * @brief Set the Volume object
              * 
              * @param volume is the volume to set
              */
-            void setVolume(float volume)
-            {
-                this->sound->setVolume(volume);
-            }
+            void setVolume(float volume);
 
         private:
             std::shared_ptr<sf::Music> sound;

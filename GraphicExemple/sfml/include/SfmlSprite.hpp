@@ -31,13 +31,7 @@ namespace arcade
              * @brief Construct a new Sfml Sprite object
              * 
              */
-            SfmlSprite()
-            {
-                texture = std::make_shared<sf::Texture>();
-                sprite =  std::make_shared<sf::Sprite>();
-                pos.first = 0;
-                pos.second = 0;
-            }
+            SfmlSprite();
             
             /**
              * @brief Destroy the Sfml Sprite object
@@ -50,33 +44,21 @@ namespace arcade
              * 
              * @return void* returns the sprite object
              */
-            void *getSprite() const override
-            {
-                return sprite.get();
-            }
+            void *getSprite() const override;
 
             /**
              * @brief Set the Sprite object
              * @attention the path must be without the extension
              * @param filePath is the path to the sprite
              */
-            void setSprite(const std::string &filePath) override
-            {
-                _filePath = filePath;
-                _filePath += ".png";
-                texture->loadFromFile(_filePath);
-                sprite->setTexture(*texture);
-            }
+            void setSprite(const std::string &filePath) override;
 
             /**
              * @brief Get the Position object
              * 
              * @return std::pair<float, float> returns the position of the sprite
              */
-            std::pair<float, float> getPosition() const override
-            {
-                return pos;
-            }
+            std::pair<float, float> getPosition() const override;
     
             /**
              * @brief Set the Position object
@@ -84,12 +66,7 @@ namespace arcade
              * @param x is the x position 
              * @param y is the y position
              */
-            void setPosition(float x, float y) override
-            {
-                pos.first = x;
-                pos.second = y;
-                sprite->setPosition((sf::Vector2f){x, y});
-            }
+            void setPosition(float x, float y) override;
 
             /**
              * @brief Set the Crop object
@@ -99,10 +76,7 @@ namespace arcade
              * @param width is the width of the crop
              * @param height is the height of the crop
              */
-            void setCrop(int x, int y, int width, int height) override
-            {
-                sprite->setTextureRect((sf::IntRect){x, y, width, height});
-            }
+            void setCrop(int x, int y, int width, int height) override;
     
             /**
              * @brief Move the sprite
@@ -110,10 +84,7 @@ namespace arcade
              * @param x is the x position
              * @param y is the y position
              */
-            void move(float x, float y) override
-            {
-                sprite->setPosition((sf::Vector2f){(pos.first + x), (pos.second + y)});
-            }
+            void move(float x, float y) override;
             
             /**
              * @brief Set the Color object
@@ -122,21 +93,14 @@ namespace arcade
              * @param g is the green value
              * @param b is the blue value
              */
-            void setColor(arcade::Color color) override
-            {
-                this->color = color;
-                sprite->setColor((sf::Color){(sf::Uint8)color.r, (sf::Uint8)color.g, (sf::Uint8)color.b});
-            }
+            void setColor(arcade::Color color) override;
 
             /**
              * @brief Get the Color object
              * 
              * @return arcade::Color returns the color of the sprite
              */
-            arcade::Color getColor() const override
-            {
-                return color;
-            }
+            arcade::Color getColor() const override;
     };  
 }
 

@@ -25,13 +25,7 @@ namespace arcade
          * @brief Construct a new Sfml Text object
          * 
          */
-        SfmlText()
-        {
-            text = std::make_shared<sf::Text>();
-            font = std::make_shared<sf::Font>();
-            pos.first = 0;
-            pos.second = 0;
-        }
+        SfmlText();
         
         /**
          * @brief Destroy the Sfml Text object
@@ -44,20 +38,14 @@ namespace arcade
          * 
          * @return void* is the text object
          */
-        void *getText() const override
-        {
-            return this->text.get();
-        }
+        void *getText() const override;
 
         /**
          * @brief Get the Position object
          * 
          * @return std::pair<float, float> returns the position of the sprite
          */
-        std::pair<float, float> getPosition() const override
-        {
-            return pos;
-        }
+        std::pair<float, float> getPosition() const override;
 
         /**
          * @brief Set the Position object
@@ -65,12 +53,7 @@ namespace arcade
          * @param x is the x position
          * @param y is the y position
          */
-        void setPosition(float x, float y) override
-        {
-            pos.first = x;
-            pos.second = y;
-            text->setPosition((sf::Vector2f){x, y});
-        }
+        void setPosition(float x, float y) override;
 
         /**
          * @brief Move the text
@@ -78,65 +61,42 @@ namespace arcade
          * @param x is the x position
          * @param y is the y position
          */
-        void move(float x, float y) override
-        {
-            text->setPosition((sf::Vector2f){(pos.first + x),
-            (pos.second + y)});
-        }
+        void move(float x, float y) override;
         
         /**
          * @brief Set the Color object
          * 
          * @param color is the color to use
          */
-        void setColor(arcade::Color color) override
-        {
-            this->color = color;
-            sf::Color colo(color.r, color.g, color.b);
-            text->setFillColor(colo);
-            text->setOutlineColor(colo);
-        }
+        void setColor(arcade::Color color) override;
 
         /**
          * @brief Get the Color object
          * 
          * @return arcade::Color returns the color of the text
          */
-        arcade::Color getColor() const override
-        {
-            return color;
-        }
+        arcade::Color getColor() const override;
 
         /**
          * @brief Set the Font Size object
          * 
          * @param size is the size of the font
          */
-        void setFontSize(unsigned int size) override
-        {
-            text->setCharacterSize(size);
-        }
+        void setFontSize(unsigned int size) override;
 
         /**
          * @brief Set the Font object
          * @attention the path must be without the extension
          * @param font is the font to use
          */
-        void setFont(const std::string &font) override
-        {
-            this->font->loadFromFile(font + ".ttf");
-            this->text->setFont(*this->font);
-        }
+        void setFont(const std::string &font) override;
 
         /**
          * @brief Set the Text object
          * 
          * @param text is the text to display
          */
-        void setText(const std::string &text) override
-        {
-            this->text->setString(text);
-        }
+        void setText(const std::string &text) override;
     };
 }
 #endif /* !SFMLTEXT_HPP_ */

@@ -31,19 +31,13 @@ namespace arcade
              * @brief Destroy the Sfml Display object
              * 
              */
-            void closeWindow() override
-            {
-                window->close();
-            }
+            void closeWindow() override;
 
             /**
              * @brief Construct a new Sfml Display object
              * 
              */
-            SfmlDisplay()
-            {
-                window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1920, (1080)), "Arcade Sfml");
-            }
+            SfmlDisplay();
         
             /**
              * @brief Set the Resolution object
@@ -51,20 +45,14 @@ namespace arcade
              * @param x is the width of the window
              * @param y is the height of the window
              */
-            void setResolution(unsigned int x, unsigned int y) override
-            {
-                window->setSize((sf::Vector2u){x, y});
-            }
+            void setResolution(unsigned int x, unsigned int y) override;
 
             /**
              * @brief Set the Window Title object
              * 
              * @param title is the title of the window
              */
-            void setWindowTitle(const std::string &title) override
-            {
-                window->setTitle(title);
-            }
+            void setWindowTitle(const std::string &title) override;
 
             /**
              * @brief Check if a key is pressed
@@ -72,28 +60,19 @@ namespace arcade
              * @return true if the key is pressed
              * @return false if the key is not pressed
              */
-            bool isOpen() const override
-            {
-                return window->isOpen();
-            }
+            bool isOpen() const override;
 
             /**
              * @brief Check if a key is pressed
              * 
              */
-            void clearWindow() override
-            {
-                window->clear(sf::Color::Black);
-            }
+            void clearWindow() override;
             
             /**
              * @brief Display the window
              * 
              */
-            void displayWindow() override
-            {
-                window->display();
-            }
+            void displayWindow() override;
             
             /**
              * @brief Check if a key is pressed
@@ -101,96 +80,55 @@ namespace arcade
              * @return true if the key is pressed
              * @return false if the key is not pressed
              */
-            bool isTextMode() const override
-            {
-                return false;
-            }
+            bool isTextMode() const override;
             
             /**
              * @brief Get the Window Width object
              * 
              * @return unsigned int is the width of the window
              */
-            unsigned int getWindowWidth() const override
-            {
-                return window->getSize().x;
-            }
+            unsigned int getWindowWidth() const override;
 
             /**
              * @brief Get the Window Height object
              * 
              * @return unsigned int is the height of the window
              */
-            unsigned int getWindowHeight() const override
-            {
-                return window->getSize().y;
-            }
+            unsigned int getWindowHeight() const override;
 
             /**
              * @brief Set the Full Screen object
              * 
              * @param state is the state of the window
              */
-            void setFullScreen(bool state) override
-            {
-                (void)state;
-                window->create(sf::VideoMode(1920, 1080), "Arcade Sfml", sf::Style::Fullscreen);
-            }
+            void setFullScreen(bool state) override;
 
             /**
              * @brief Create a Sprite object
              * 
              * @return std::shared_ptr<arcade::interface::ISpriteModule> 
              */
-            std::shared_ptr<arcade::interface::ISpriteModule> createSprite() override
-            {
-                return std::make_shared<arcade::SfmlSprite>();
-            }
+            std::shared_ptr<arcade::interface::ISpriteModule> createSprite() override;
 
             /**
              * @brief Create a Text object
              * 
              * @return std::shared_ptr<arcade::interface::ITextModule> 
              */
-            std::shared_ptr<arcade::interface::ITextModule> createText() override
-            {
-                return std::make_shared<arcade::SfmlText>();
-            }
+            std::shared_ptr<arcade::interface::ITextModule> createText() override;
 
             /**
              * @brief Create a Audio object
              * 
              * @return std::shared_ptr<arcade::interface::IAudioModule> 
              */
-            std::shared_ptr<arcade::interface::IAudioModule> createAudio() override
-            {
-                return std::make_shared<arcade::SfmlAudio>();
-            }
+            std::shared_ptr<arcade::interface::IAudioModule> createAudio() override;
             
             /**
              * @brief Fetch the inputs from the window
              * 
              */
-            void fetchInputs() override
-            {
-                sf::Event event;
-
-                while (window->pollEvent(event))
-                    if (event.type == sf::Event::Closed)
-                        this->window->close();
-
-                // Mouse Input        
-                pressedKeys[arcade::interface::KeyCode::MouseButton1] = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-                pressedKeys[arcade::interface::KeyCode::MouseButton2] = sf::Mouse::isButtonPressed(sf::Mouse::Middle);
-                pressedKeys[arcade::interface::KeyCode::MouseButton3] = sf::Mouse::isButtonPressed(sf::Mouse::Right);
-                
-                // keyboard inputs
-                for (int i = 0; i < arcade::interface::KeyCount; ++i)
-                    pressedKeys[(arcade::interface::KeyCode)i] = sf::Keyboard::isKeyPressed((sf::Keyboard::Key)i);
-                
-                //(bind with smfl sf::Key for keyboard and sf::Button for mouse)
-                //TODO: need to see if binding is the same for sdl and others
-            }
+            void fetchInputs() override;
 
             /**
              * @brief Check if a key is pressed
@@ -199,62 +137,42 @@ namespace arcade
              * @return true if the key is pressed
              * @return false if the key is not pressed
              */
-            bool isKeyPressed(arcade::interface::KeyCode key) override
-            {
-                return pressedKeys[key];
-            }
+            bool isKeyPressed(arcade::interface::KeyCode key) override;
 
             /**
              * @brief Get the Mouse X Position object
              * 
              * @return unsigned int position of the mouse on the x axis
              */
-            unsigned int getMouseXPosition() const override 
-            {
-                return sf::Mouse::getPosition().x;
-            }
+            unsigned int getMouseXPosition() const override;
 
             /**
              * @brief Get the Mouse Y Position object
              * 
              * @return unsigned int position of the mouse on the y axis
              */
-            unsigned int getMouseYPosition() const override 
-            {
-                return sf::Mouse::getPosition().y;
-            }
+            unsigned int getMouseYPosition() const override;
 
             /**
              * @brief Set the Fps object
              * 
              * @param fps is the number of frame per second
              */
-            void setFps(int fps) override
-            {
-                window->setFramerateLimit(fps);
-            }
+            void setFps(int fps) override;
             
             /**
              * @brief Draw a sprite on the screen
              * 
              * @param spriteModule is the sprite to draw
              */
-            void draw(std::shared_ptr<arcade::interface::ISpriteModule> spriteModule) override
-            {
-                sf::Sprite *temp((sf::Sprite *)spriteModule->getSprite());
-                window->draw(*temp);
-            }
+            void draw(std::shared_ptr<arcade::interface::ISpriteModule> spriteModule) override;
 
             /**
              * @brief Draw a text on the screen
              * 
              * @param textModule is the text to draw
              */
-            void draw(std::shared_ptr<arcade::interface::ITextModule> textModule) override
-            {
-                sf::Text *temp((sf::Text *)textModule->getText());
-                window->draw(*temp);
-            }
+            void draw(std::shared_ptr<arcade::interface::ITextModule> textModule) override;
     };  
 }
 #endif /* !SFMLDISPLAY_HPP_ */
