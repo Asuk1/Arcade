@@ -7,61 +7,51 @@
 
 #include "../include/Core.hpp"
 
-code::Core::Core(const std::string &path)
-    : _libLoader(std::make_shared<core::DynamicLoader>()),
-    _gameLoader(std::make_shared<core::DynamicLoader>()),
-    _menuLoader(std::make_shared<core::DynamicLoader>()),
-    _actual_lib(0), _actual_game(0), _actual_menu(0),
-    _is_menu_still_running(true), return_value(0)
-    {
-        // Load all libraries from the given path
-        for (const auto &entry : std::filesystem::directory_iterator(path)) {
-            if (entry.path().extension() == ".so") {
-                std::string lib_path = entry.path().filename(); // entry.path() returns a filesystem::path object which represents the path of the file or directory. In this case, entry is an object representing an entry in the directory pointed to by path
-                std::string lib_name = entry.path().stem().string(); // entry.path() returns a filesystem::path object which represents the path of the file or directory. In this case, entry is an object representing an entry in the directory pointed to by path
-                try {
-                    std::cout << "Library " << lib_name <<" successfully loaded." << std::endl;
-                } catch (const std::exception& ex) {
-                    std::cerr << "Error: cannot load library " << lib_name <<" (" << ex.what() << ")" << std::endl;
-            }
-        }
-    }
+code::Core::Core(const std::string &path) : _user_data()
+{
+    this->return_value = 0;
+    this->_is_menu_still_running = true;
+    this->_actual_game = 0;
+    this->_actual_menu = 0;
 
-    if (_libs.empty()) {
-        throw std::runtime_error("Error: no libraries found in path " + path);
-    }
+    // load all yout actual graphicals library
 
-    // Load the first library as the default one
-    load_actual_lib(_libs[_actual_lib]);
+    // init param of window if you want
 
-    // Load the menu module
-    load_actual_menu("lib_arcade_menu.so");
-
-    // Start the loop for the game
-    loop_for_game();
 }
 
 code::Core::~Core()
 {
-    _libLoader->closeLibrary();
-    _gameLoader->closeLibrary();
-    _menuLoader->closeLibrary();
+
 }
 
 
 int code::Core::loop_for_game()
 {
-    while (_is_menu_still_running) {
-        // Load the menu module
-        load_actual_menu(_menus[_actual_menu]);
-
-        // Load the first game as the default one
-        load_actual_game(_games[_actual_game]);
-
-        // Start the loop for the game
-    //    loop_for_game();
+    while (this->_actual_graph->isOpen())
+    {
+        if (this->_is_menu_still_running) {
+            try {
+                this->_ret_value = this->_menu->update(this->_actual_graph, this->_user_data, _libs, _games, _menus, _actual_lib, _actual_game, _actual_menu);
+            } catch (const std::exception &e) {
+                std::cerr << "Error Game: " << e.what() << "\n";
+            }
+        } else {
+            try {
+                this->_ret_value = this->_game->update(this->_actual_graph, this->_user_data, _libs, _games, _menus, _actual_lib, _actual_game, _actual_menu);
+            } catch (const std::exception &e) {
+                std::cerr << "Error Game: " << e.what() << "\n";
+            }
         }
-    return return_value;
+        if (this->handle_value_returned() == 84)
+            return 84;
+        /*this->return_value = 0; reset le ret value a zero a chaque tour de boucle
+        un truc qui va raffraichir de rafraichir la list des lib a chaque tour de boucle
+        this->_graph->fetchInputs(); permet de rafraichir les inputs a chaque tour de boucle
+        if (this->_graph->isKeyPressed(arcade::interface::Escape)) permet de quitter le jeu si on appuie sur echap
+            return 0;
+        */
+    }
 }
 
 void code::Core::load_actual_lib(const std::string& lib_path)
@@ -70,11 +60,17 @@ void code::Core::load_actual_lib(const std::string& lib_path)
 
     try {
         _libLoader->loadLibrary(lib_path);
-        createDisplay = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IDisplayModule> (*)()>("createDisplay");
-        this->_lib = createDisplay();
     } catch (const std::exception& ex) {
         throw std::runtime_error("Error: cannot load library from path: " + lib_path + " (" + ex.what() + ")");
     }
+    if (_libLoader != nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + lib_path);
+    createDisplay = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IDisplayModule> (*)()>("createDisplay");
+    if (createDisplay == nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + lib_path);
+    this->_lib = createDisplay();
+    if (this->_lib == nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + lib_path);
 }
 
 void code::Core::load_actual_game(const std::string &game_path)
@@ -82,25 +78,37 @@ void code::Core::load_actual_game(const std::string &game_path)
     std::shared_ptr<arcade::interface::IGameModule> (*createGame)();
 
     try {
-        _gameLoader->loadLibrary(game_path);
-        createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createGame");
-        this->_game = createGame();
+        _gameLoader->loadLibrary(game_path);;
     } catch (const std::exception& ex) {
         throw std::runtime_error("Error: cannot load library from path: " + game_path + " (" + ex.what() + ")");
     }
+    if (_gameLoader != nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + game_path);
+    createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createGame");
+    if (createGame == nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + game_path);
+    this->_game = createGame();
+    if (this->_game == nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + game_path);
 }
 
 void code::Core::load_actual_menu(const std::string &menu_path)
 {
-    std::shared_ptr<arcade::interface::IGameModule> (*createGame)();
+    std::shared_ptr<arcade::interface::IGameModule> (*createMenu)();
 
     try {
-        _gameLoader->loadLibrary(menu_path);
-        createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createGame");
-        this->_menu = createGame();
+        _menuLoader->loadLibrary(menu_path);
     } catch (const std::exception& ex) {
         throw std::runtime_error("Error: cannot load library from path: " + menu_path + " (" + ex.what() + ")");
     }
+    if (_menuLoader != nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + menu_path);
+    createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createMenu");
+    if (createMenu == nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + menu_path);
+    this->_menu = createMenu();
+    if (this->_menu == nullptr)
+        throw std::runtime_error("Error: cannot load library from path: " + menu_path);
 }
 
 bool code::Core::load_prev_lib()
@@ -163,20 +171,39 @@ bool code::Core::load_next_menu()
     return true;
 }
 
-void code::Core::handle_value_returned()
+int code::Core::handle_value_returned()
 {
-    if (return_value == 1)
-        load_next_lib();
-    else if (return_value == 2)
-        load_prev_lib();
-    else if (return_value == 3)
-        load_next_game();
-    else if (return_value == 4)
-        load_prev_game();
-    else if (return_value == 5)
-        load_next_menu();
-    else if (return_value == 6)
-        load_prev_menu();
-    else if (return_value == 7)
+    if (return_value == 1) {
+        if (!load_next_game())
+            return 84;
+        _game->Initialisation(this->_lib);
+    } else if (return_value == -1) {
+        if (!load_prev_game())
+            return 84;
+        _game->Initialisation(this->_lib);
+    } else if (return_value == 69) {
         _is_menu_still_running = false;
+    } else if (return_value == 2) {
+        if (!load_next_lib())
+            return 84;
+        _game->Initialisation(this->_lib);
+        _menu->Initialisation(this->_lib);
+    } else if (return_value == -2) {
+        if (!load_prev_lib())
+            return 84;
+        _game->Initialisation(this->_lib);
+        _menu->Initialisation(this->_lib);
+    } else if (return_value == 3) {
+        if (!load_next_menu())
+            return 84;
+        _menu->Initialisation(this->_lib);
+    } else if (return_value == -3) {
+        if (!load_prev_menu())
+            return 84;
+        _menu->Initialisation(this->_lib);
+    } else if (return_value == 84) {
+        return 84;
+    }
+
+    return 0;
 }
