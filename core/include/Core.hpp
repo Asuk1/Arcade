@@ -50,7 +50,7 @@ namespace code {
 
             bool load_next_menu();
 
-            void handle_value_returned();
+            int handle_value_returned();
 
         private:
             std::shared_ptr<core::DynamicLoader> _libLoader;
@@ -68,7 +68,8 @@ namespace code {
             size_t _actual_lib;
             size_t _actual_game;
             size_t _actual_menu;
-
+            
+            arcade::User_data _user_data;
             bool _is_menu_still_running;
             int return_value;
     };
