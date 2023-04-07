@@ -15,7 +15,7 @@ arcade::SfmlSprite::SfmlSprite()
     pos.second = 0;
 }
 
-void *arcade::SfmlSprite::getSprite() const
+void *arcade::SfmlSprite::getSprite()
 {
     return sprite.get();
 }

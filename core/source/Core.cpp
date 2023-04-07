@@ -66,20 +66,25 @@ int code::Core::loop_for_game()
 
 void code::Core::load_actual_lib(const std::string& lib_path)
 {
-    try {
-            _libLoader->loadLibrary(lib_path);
-            auto tmp = _libLoader->loadSymbol<arcade::interface::IDisplayModule *(*)()>("createModule");
-            arcade::interface::IDisplayModule *_lib = tmp();
+    std::shared_ptr<arcade::interface::IDisplayModule> (*createDisplay)();
 
-            } catch (const std::exception& ex) {
-                throw std::runtime_error("Error: cannot load library from path: " + lib_path + " (" + ex.what() + ")");
-            }
+    try {
+        _libLoader->loadLibrary(lib_path);
+        createDisplay = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IDisplayModule> (*)()>("createDisplay");
+        this->_lib = createDisplay();
+    } catch (const std::exception& ex) {
+        throw std::runtime_error("Error: cannot load library from path: " + lib_path + " (" + ex.what() + ")");
+    }
 }
 
 void code::Core::load_actual_game(const std::string &game_path)
 {
+    std::shared_ptr<arcade::interface::IGameModule> (*createGame)();
+
     try {
         _gameLoader->loadLibrary(game_path);
+        createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createGame");
+        this->_game = createGame();
     } catch (const std::exception& ex) {
         throw std::runtime_error("Error: cannot load library from path: " + game_path + " (" + ex.what() + ")");
     }
@@ -87,8 +92,12 @@ void code::Core::load_actual_game(const std::string &game_path)
 
 void code::Core::load_actual_menu(const std::string &menu_path)
 {
+    std::shared_ptr<arcade::interface::IGameModule> (*createGame)();
+
     try {
-        _menuLoader->loadLibrary(menu_path);
+        _gameLoader->loadLibrary(menu_path);
+        createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createGame");
+        this->_menu = createGame();
     } catch (const std::exception& ex) {
         throw std::runtime_error("Error: cannot load library from path: " + menu_path + " (" + ex.what() + ")");
     }

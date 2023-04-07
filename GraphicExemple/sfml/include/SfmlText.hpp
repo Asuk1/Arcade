@@ -38,7 +38,7 @@ namespace arcade
          * 
          * @return void* is the text object
          */
-        void *getText() const override;
+        void *getText() override;
 
         /**
          * @brief Get the Position object

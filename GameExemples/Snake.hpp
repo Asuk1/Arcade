@@ -103,8 +103,25 @@ class Snake : public arcade::interface::IGameModule
 
             void drawSnake (std::shared_ptr<arcade::interface::IDisplayModule> display)
             {
+                std::shared_ptr<arcade::interface::ISpriteModule> snake_unit = display->createSprite();
+                std::shared_ptr<arcade::interface::ISpriteModule> snake_head = display->createSprite();
+                /*
+                    snake_unit->setSprite(path_unit)
+                    snake_head->setSprite(path_head)
+                */
+                bool first_time = true;
+
                 for (auto const &pos : this->snake) {
-                    display->draw(pos.first, pos.second, arcade::interface::Color::Green)
+                    if (first_time) {
+                        snake_head->setColor(arcade::RED);
+                        snake_head->setPosition(pos.first, pos.second);
+                        display->draw(snake_head);
+                        first_time = false;
+                    } else {
+                        snake_unit->setPosition(pos.first, pos.second);
+                        snake_unit->setColor(arcade::GREEN);
+                        display->draw(snake_unit);
+                    }
                 }
             }
 

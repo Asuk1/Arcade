@@ -44,7 +44,7 @@ namespace arcade
              * 
              * @return void* returns the sprite object
              */
-            void *getSprite() const override;
+            void *getSprite() override;
 
             /**
              * @brief Set the Sprite object

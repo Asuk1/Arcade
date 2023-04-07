@@ -15,7 +15,7 @@ arcade::SfmlText::SfmlText()
     pos.second = 0;
 }
 
-void *arcade::SfmlText::getText() const
+void *arcade::SfmlText::getText()
 {
     return this->text.get();
 }
