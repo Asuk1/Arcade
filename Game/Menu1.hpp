@@ -8,6 +8,7 @@
 #include "../Module Interface/IGameModule.hpp"
 #include "../Module Interface/IDisplayModule.hpp"
 #include "../Module Interface/UserModule.hpp"
+#include "../Module Interface/Color.hpp"
 #include <iostream>
 
 class Menu1 : public arcade::interface::IGameModule
@@ -40,7 +41,7 @@ class Menu1 : public arcade::interface::IGameModule
                 return -3;
             // INPUT FOR MANAGEMENT OF LIBS    
             display->draw(title);
-            display->fetchInputs();            
+            display->fetchInputs();
             display->displayWindow();
             return 0;
         }
@@ -57,7 +58,7 @@ class Menu1 : public arcade::interface::IGameModule
             title = display->createText();
             title->setText("Menu");
             title->setPosition(100, 10);
-            title->setColor(255, 255, 255);
+            title->setColor(arcade::Color {255, 255, 255, 255});
             title->setFontSize(50);
             return true;
         }

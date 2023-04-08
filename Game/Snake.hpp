@@ -8,6 +8,7 @@
 #include "../Module Interface/IGameModule.hpp"
 #include "../Module Interface/IDisplayModule.hpp"
 #include "../Module Interface/UserModule.hpp"
+#include "../Module Interface/Color.hpp"
 #include <iostream>
 #include <vector>
 
@@ -97,7 +98,6 @@ class Snake : public arcade::interface::IGameModule
                 if (this->snake[0] == this->apple) {
                     this->score += 10;
                     this->snake.push_back({-1, -1});
-                    this->placeApple();
                 }
             }
 
@@ -137,20 +137,25 @@ class Snake : public arcade::interface::IGameModule
                 if (first_time) {
                     apple->setColor(arcade::RED);
                     apple->setPosition(this->apple.first, this->apple.second);
-                    apple->placeApple();
                     display->draw(apple);
                     first_time = false;
                 } else {
                     apple->setPosition(this->apple.first, this->apple.second);
                     apple->setColor(arcade::RED);
-                    apple->placeApple();
                     display->draw(apple);
                 }
             }
 
             void drawScore (std::shared_ptr<arcade::interface::IDisplayModule> display)
             {
-                display->draw(2, 0, "Score: " + std::to_string(this->score), arcade::interface::Color::White);
+                std::shared_ptr<arcade::interface::ITextModule> score = display->createText();
+                /*
+                    score->setFont(path_font)
+                */
+                score->setColor(arcade::WHITE);
+                score->setText("Score: " + std::to_string(this->score));
+                score->setPosition(0, 0);
+                display->draw(score);
             }
 
             void placeApple ()
