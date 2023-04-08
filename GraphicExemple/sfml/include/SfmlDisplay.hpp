@@ -8,7 +8,7 @@
 #ifndef SFMLDISPLAY_HPP_
     #define SFMLDISPLAY_HPP_
     #include <map>
-    #include "IDisplayModule.hpp"
+    #include "../../../Module Interface/IDisplayModule.hpp"
     #include "SfmlSprite.hpp"
     #include "SfmlText.hpp"
     #include "SfmlAudio.hpp"

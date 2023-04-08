@@ -8,7 +8,7 @@
 #ifndef SFMLTEXT_HPP_
     #define SFMLTEXT_HPP_
     #include <SFML/Graphics/Text.hpp>
-    #include "ITextModule.hpp"
+    #include "../../../Module Interface/ITextModule.hpp"
     #include <memory>
 
 namespace arcade

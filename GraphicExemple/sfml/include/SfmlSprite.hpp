@@ -10,7 +10,7 @@
     #include <SFML/Graphics/Sprite.hpp>
     #include <SFML/Graphics/Texture.hpp>
     #include <string>
-    #include "ISpriteModule.hpp"
+    #include "../../../Module Interface/ISpriteModule.hpp"
     #include <memory>
 
 namespace arcade

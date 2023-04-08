@@ -7,7 +7,7 @@
 
 #ifndef SFMLAUDIO_HPP_
     #define SFMLAUDIO_HPP_
-    #include "IAudioModule.hpp"
+    #include "../../../Module Interface/IAudioModule.hpp"
     #include <SFML/Audio/Music.hpp>
     #include <memory>
 
