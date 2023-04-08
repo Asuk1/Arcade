@@ -16,7 +16,30 @@ code::Core::Core(const std::string &path) : _user_data()
 
     // load all yout actual graphicals library
 
+    _libs = {"./lib/arcade_ncurses.so", "./lib/arcade_sdl2.so", "./lib/arcade_sfml.so"};
+    for (int i = 0; i < _libs.size(); ++i) {
+        if (path == _libs[i]) {
+            this->_actual_lib = i;
+            this->load_actual_lib(_libs[i]);
+            break;
+        }
+    }
+
+    _games = {"./lib/arcade_snake.so", "./lib/arcade_pacman.so"};
+    for (int i = 0; i < _games.size(); ++i) {
+        if (path == _games[i]) {
+            this->_actual_game = i;
+            this->load_actual_game(_games[i]);
+            break;
+        }
+    }
+    _game.get()->Initialisation(_lib);
+
     // init param of window if you want
+
+    this->_lib->setWindowTitle("Arcade");
+    this->_lib->setFps(60);
+    this->_lib->setResolution(1600, 900);
 
 }
 
@@ -28,17 +51,17 @@ code::Core::~Core()
 
 int code::Core::loop_for_game()
 {
-    while (this->_actual_graph->isOpen())
+    while (this->_lib->isOpen())
     {
         if (this->_is_menu_still_running) {
             try {
-                this->_ret_value = this->_menu->update(this->_actual_graph, this->_user_data, _libs, _games, _menus, _actual_lib, _actual_game, _actual_menu);
+                this->return_value = this->_menu->update(this->_lib, this->_user_data, _games, _libs, _menus, _actual_lib, _actual_game, _actual_menu);
             } catch (const std::exception &e) {
                 std::cerr << "Error Game: " << e.what() << "\n";
             }
         } else {
             try {
-                this->_ret_value = this->_game->update(this->_actual_graph, this->_user_data, _libs, _games, _menus, _actual_lib, _actual_game, _actual_menu);
+                this->return_value = this->_game->update(this->_lib, this->_user_data, _games, _libs, _menus, _actual_lib, _actual_game, _actual_menu);
             } catch (const std::exception &e) {
                 std::cerr << "Error Game: " << e.what() << "\n";
             }
@@ -103,7 +126,7 @@ void code::Core::load_actual_menu(const std::string &menu_path)
     }
     if (_menuLoader != nullptr)
         throw std::runtime_error("Error: cannot load library from path: " + menu_path);
-    createGame = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createMenu");
+    createMenu = _libLoader->loadSymbol<std::shared_ptr<arcade::interface::IGameModule> (*)()>("createMenu");
     if (createMenu == nullptr)
         throw std::runtime_error("Error: cannot load library from path: " + menu_path);
     this->_menu = createMenu();

@@ -18,7 +18,7 @@
     #include "../Module Interface/IDisplayModule.hpp"
     #include <exception>
     #include "DynamicLoader.hpp"
-    #include <filesystem>
+    #include <cstring>
 
 //Dynamic loader -> open .so récupérer les infos(getinfo(std::string info)) et close
 
