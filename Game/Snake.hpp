@@ -113,7 +113,7 @@ class Snake : public arcade::interface::IGameModule
 
                 for (auto const &pos : this->snake) {
                     if (first_time) {
-                        snake_head->setColor(arcade::RED);
+                        snake_head->setColor(arcade::GREEN);
                         snake_head->setPosition(pos.first, pos.second);
                         display->draw(snake_head);
                         first_time = false;
@@ -127,7 +127,25 @@ class Snake : public arcade::interface::IGameModule
 
             void drawApple (std::shared_ptr<arcade::interface::IDisplayModule> display)
             {
-                display->draw(this->apple.first, this->apple.second, arcade::interface::Color::Red);
+                std::shared_ptr<arcade::interface::ISpriteModule> apple = display->createSprite();
+                /*
+                    apple->setSprite(path_apple)
+                */
+
+                bool first_time = true;
+
+                if (first_time) {
+                    apple->setColor(arcade::RED);
+                    apple->setPosition(this->apple.first, this->apple.second);
+                    apple->placeApple();
+                    display->draw(apple);
+                    first_time = false;
+                } else {
+                    apple->setPosition(this->apple.first, this->apple.second);
+                    apple->setColor(arcade::RED);
+                    apple->placeApple();
+                    display->draw(apple);
+                }
             }
 
             void drawScore (std::shared_ptr<arcade::interface::IDisplayModule> display)
