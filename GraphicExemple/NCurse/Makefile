@@ -21,14 +21,14 @@ all:	$(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) -shared -o $(NAME) $(OBJ)
-	cp $(NAME) ../../../lib/
+	cp $(NAME) ../../lib/
 
 clean:
 		$(RM) $(OBJ)
 
 fclean: clean
 		$(RM) $(NAME)
-		$(RM) ../../../lib/$(NAME)
+		$(RM) ../../lib/$(NAME)
 
 re: fclean all
 
