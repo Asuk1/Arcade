@@ -22,4 +22,4 @@ extern "C"
     {
         return "ncurses";
     }
-}
+};

@@ -13,73 +13,85 @@
 #include "../../../Module Interface/ISpriteModule.hpp"
 #include <memory>
 
-
 namespace arcade
 {
     class NcurseSprite : public arcade::interface::ISpriteModule
     {
     public:
-        // PROPERTIES:
         std::shared_ptr<WINDOW> window;
         std::pair<float, float> pos;
-        char texture;
-        char sprite;
-        char color;
-        unsigned char r;
-        unsigned char g;
-        unsigned char b;
-
-        // LOGIC
+        std::string texture;
+        std::string sprite;
+        chtype color;
+        int r;
+        int g;
+        int b;
 
         NcurseSprite()
         {
             window = std::make_shared<WINDOW>(newwin(0, 0, 0, 0));
-            texture = ' ';
-            sprite =  ' ';
+            texture = " ";
+            sprite = " ";
             pos.first = 0;
             pos.second = 0;
-            this->r = 255;
-            this->g = 255;
-            this->b = 255;
+            r = 255;
+            g = 255;
+            b = 255;
         }
 
         ~NcurseSprite() = default;
 
-        void *getSprite() const override
-        {
-    
-        }
-
-        void setSprite(std::string filePath) override
+        void *getSprite()
         {
 
         }
 
-        void setPosition(float x, float y) override
+        void setSprite(const std::string &path)
+        {
+
+        }
+
+        void setPosition(float x, float y)
         {
             pos.first = x;
             pos.second = y;
             wmove(window.get(), pos.second, pos.first);
         }
 
-        void setCrop(int x, int y, int width, int height) override
+        std::pair<float, float> getPosition() const
         {
-            wresize(window.get(), height, width);
+            return pos;
         }
 
-        void move(float x, float y) override
+        void setCrop(int x, int y, int width, int height) 
+        {
+            wresize(window.get(), height, width);
+            pos.first += x;
+            pos.second += y;
+            mvwin(window.get(), pos.second, pos.first);
+        }
+
+        void move(float x, float y) 
         {
             pos.first += x;
             pos.second += y;
             mvwin(window.get(), pos.second, pos.first);
         }
 
-        void setColor(unsigned char r, unsigned char g, unsigned char b) override
+        void setColor(arcade::Color color) 
         {
-            this->r = r;
-            this->g = g;
-            this->b = b;
+            r = color.r;
+            g = color.g;
+            b = color.b;
+            init_color(COLOR_WHITE + 1, r * 1000 / 255, g * 1000 / 255, b * 1000 / 255);
+            init_pair(1, COLOR_WHITE + 1, COLOR_BLACK);
+            this->color = COLOR_PAIR(1);
         }
 
+
+        arcade::Color getColor() const
+        {
+
+        }
     };
 }

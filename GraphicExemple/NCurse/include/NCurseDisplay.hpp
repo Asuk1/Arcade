@@ -10,6 +10,7 @@
 #include <ncurses.h>
 #include <map>
 #include "../../../Module Interface/IDisplayModule.hpp"
+#include "../../../Module Interface/Color.hpp"
 #include "NCurseSprite.hpp"
 #include "NCurseText.hpp"
 #include <memory>
@@ -25,7 +26,7 @@ namespace arcade
 
             NcurseDisplay()
             {
-                window = std::make_shared<WINDOW>(newwin(LINES, COLS, 0, 0));
+                window = std::make_shared<WINDOW>(newwin(LINES, COLS, 10, 10));
                 noecho();
                 curs_set(0);
                 keypad(stdscr, TRUE);
@@ -40,39 +41,39 @@ namespace arcade
                 init_pair(7, COLOR_WHITE, COLOR_BLACK);
             }
             
-            void displayWindow() override
+            void displayWindow() 
             {
                 for (int i = 0; i < LINES; i++)
                     for (int j = 0; j < COLS; j++)
                         mvwprintw(window.get(), i, j, "%c", map[i][j]);
             }
 
-            void closeWindow() override
+            void closeWindow() 
             {
                 endwin();
             }
         
-            void setResolution(unsigned int x, unsigned int y) override
+            void setResolution(unsigned int x, unsigned int y) 
             {
-                window = std::make_shared<WINDOW>(newwin(y, x, 0, 0));
+                window = std::make_shared<WINDOW>(newwin(y, x, 10, 10));
             }
 
-            void setWindowTitle(std::string title)  override
+            void setWindowTitle(const std::string &title) 
             {
-                // Ignored in ncurses
+                wprintw(window.get(), title.c_str());
             }
             
-            unsigned int getWindowWidth() override
+            unsigned int getWindowWidth() const
             {
                 return COLS;
             }
-            
-            unsigned int getWindowHeight() override
+
+            unsigned int getWindowHeight() const
             {
                 return LINES;
             }
-            
-            void clearWindow()  override
+
+            void clearWindow()
             {
                 clear();
             }
@@ -82,7 +83,7 @@ namespace arcade
                 wrefresh(window.get());
             }
 
-            void draw(std::shared_ptr<arcade::interface::ISpriteModule> sprite) override
+            void draw(std::shared_ptr<arcade::interface::ISpriteModule> sprite)
             {
                 NcurseSprite *spritePtr = dynamic_cast<NcurseSprite *>(sprite.get());
                 if (spritePtr == nullptr)
@@ -92,7 +93,7 @@ namespace arcade
                 attroff(COLOR_PAIR(spritePtr->color));
             }
 
-            void draw(std::shared_ptr<arcade::interface::ITextModule> text) override
+            void draw(std::shared_ptr<arcade::interface::ITextModule> text)
             {
                 NcurseText *textPtr = dynamic_cast<NcurseText *>(text.get());
                 if (textPtr == nullptr)
@@ -102,7 +103,7 @@ namespace arcade
                 attroff(COLOR_PAIR(textPtr->color));
             }
 
-            void fetchInputs() override
+            void fetchInputs()
             {
                 int ch = getch();
                 switch (ch) {
@@ -127,7 +128,7 @@ namespace arcade
                 }
             }
 
-            bool isKeyPressed(arcade::interface::KeyCode key) override
+            bool isKeyPressed(arcade::interface::KeyCode key) 
             {
                 int ch = getch();
                 switch (key) {
@@ -148,48 +149,48 @@ namespace arcade
                 }
             }
 
-            unsigned int getMouseXPosition() const override
+            unsigned int getMouseXPosition() const 
             {
                 return 0;
             }
 
-            unsigned int getMouseYPosition() const override
+            unsigned int getMouseYPosition() const 
             {
                 return 0;
             }
 
 
-            void setFps(int fps) override
+            void setFps(int fps) 
             {
                 timeout(1000 / fps);
             }
 
-            void setFullScreen(bool fullscreen) override
+            void setFullScreen(bool fullscreen) 
             {
                 // Ignored in ncurses
             }
 
-            bool isOpen() override
+            bool isOpen() const 
             {
                 return true;
             }
 
-            bool isTextMode() override
+            bool isTextMode() const 
             {
                 return false;
             }
 
-            std::shared_ptr<arcade::interface::ISpriteModule> createSprite() override
+            std::shared_ptr<arcade::interface::ISpriteModule> createSprite() 
             {
                 return std::make_shared<NcurseSprite>();
             }
 
-            std::shared_ptr<arcade::interface::ITextModule> createText() override
+            std::shared_ptr<arcade::interface::ITextModule> createText() 
             {
                 return std::make_shared<NcurseText>();
             }
 
-            std::shared_ptr<arcade::interface::IAudioModule> createAudio() override
+            std::shared_ptr<arcade::interface::IAudioModule> createAudio() 
             {
                 throw std::exception();
             }
