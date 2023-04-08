@@ -1,17 +1,17 @@
 ##
 ## EPITECH PROJECT, 2023
-## SFML
+## SDL
 ## File description:
 ## Makefile
 ##
 
-NAME		=	arcade_sfml.so
+NAME		=	arcade_sdl2.so
 
-SRC       	=  	sources/sfml.cpp	\
-				sources/SfmlAudio.cpp	\
-				sources/SfmlDisplay.cpp	\
-				sources/SfmlSprite.cpp	\
-				sources/SfmlText.cpp
+SRC       	=  	source/createSDL2.cpp	\
+				source/sdl2Audio.cpp	\
+				source/sdl2Display.cpp	\
+				source/sdl2Text.cpp		\
+				source/sdl2Sprite.cpp
 
 OBJ         =	$(SRC:.cpp=.o)
 
@@ -24,7 +24,7 @@ CXXFLAGS      =   -W -Wall -Wextra -fPIC
 all:	$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) -shared -o $(NAME) $(OBJ) -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	$(CC) -shared -o $(NAME) $(OBJ) -lSDL2 -lSDL2_ttf -lSDL2_mixer -lSDL2_image
 	cp $(NAME) ../../lib/
 
 clean:
